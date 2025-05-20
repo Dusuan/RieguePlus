@@ -84,7 +84,17 @@ export default function AlarmSection() {
           {timeDisplay}
         </Text>
         {item.isFinished && (
-          <Text className="text-green-700 mt-1">¡Hora de regar!</Text>
+          <>
+        <Text className="text-green-700 mt-1">¡Hora de regar!</Text>
+        <TouchableOpacity
+          className="mt-2 px-4 py-2 bg-red-500 rounded"
+          onPress={() => {
+            setTimers((prev) => prev.filter((t) => t.id !== item.id));
+          }}
+        >
+          <Text className="text-white font-medium">Eliminar</Text>
+        </TouchableOpacity>
+          </>
         )}
       </View>
     );
