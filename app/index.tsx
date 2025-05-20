@@ -4,7 +4,8 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { ImageBackground } from "expo-image";
-
+import { StatusBar } from "expo-status-bar";
+import AlarmSection from "../components/AlarmSection";
 type Slide = {
   title?: string;
   content?: string;
@@ -60,9 +61,9 @@ export default function Index() {
   return (
     <>
       {showRealApp ? (
-        <SafeAreaView>
-          <View className="flex">
-            <Text className="text-black">Hola jaja</Text>
+        <SafeAreaView className="flex-1 bg-[#4C8E97] justify-center text-black">
+          <View className="flex-1 justify-center items-center mt-10">
+            <AlarmSection />
           </View>
         </SafeAreaView>
       ) : (
