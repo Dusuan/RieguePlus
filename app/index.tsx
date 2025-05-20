@@ -6,6 +6,8 @@ import { StyleSheet } from "react-native";
 import { ImageBackground } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import AlarmSection from "../components/AlarmSection";
+import { BottomNavigation } from "react-native-paper";
+
 type Slide = {
   title?: string;
   content?: string;
@@ -27,8 +29,67 @@ const slides: Slide[] = [
   },
 ];
 
+const TimerRoute = () => {
+  return (
+    <View className="flex-1 bg-slate-500">
+      <AlarmSection />
+    </View>
+  );
+};
+
+const MapRoute = () => {
+  return (
+    <View className="flex-1 bg-white justify-center items-center">
+      <Image
+        source={require("../assets/images/logo.png")}
+        style={{ width: 100, height: 100, marginBottom: 20 }}
+      />
+      <Text>Próximamente</Text>
+    </View>
+  );
+};
+
+const SettingsRoute = () => {
+  return (
+    <View className="flex-1  bg-white justify-center items-center">
+      <Image
+        source={require("../assets/images/logo.png")}
+        style={{ width: 100, height: 100, marginBottom: 20 }}
+      />
+      <Text>Próximamente</Text>
+    </View>
+  );
+};
+
 export default function Index() {
   const [showRealApp, setShowRealApp] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    {
+      key: "timer",
+      title: "Riego",
+      focusedIcon: "water",
+      unfocusedIcon: "water-outline",
+    },
+    {
+      key: "map",
+      title: "Mapa",
+      focusedIcon: "map",
+      unfocusedIcon: "map-outline",
+    },
+    {
+      key: "settings",
+      title: "Configuración",
+      focusedIcon: "cog",
+      unfocusedIcon: "cog-outline",
+    },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    timer: TimerRoute,
+    map: MapRoute,
+    settings: SettingsRoute,
+  });
 
   const onDone = () => {
     setShowRealApp(true);
@@ -52,7 +113,6 @@ export default function Index() {
           style={{ width: 100, height: 100, marginBottom: 20 }}
         />
         <Text style={styles.introTitleStyle}>{item.title} </Text>
-
         <Text style={styles.content}>{item.content} </Text>
       </View>
     );
@@ -61,9 +121,16 @@ export default function Index() {
   return (
     <>
       {showRealApp ? (
-        <SafeAreaView className="flex-1 bg-[#4C8E97] justify-center text-black">
-          <View className="flex-1 justify-center items-center mt-10">
-            <AlarmSection />
+        <SafeAreaView className="flex-1 bg-white justify-center">
+          <View className="flex-1 ">
+            <BottomNavigation
+              navigationState={{ index, routes }}
+              onIndexChange={setIndex}
+              renderScene={renderScene}
+              barStyle={{ backgroundColor: "#4C8E97" }}
+              activeColor="#fff"
+              inactiveColor="#fff"
+            />
           </View>
         </SafeAreaView>
       ) : (

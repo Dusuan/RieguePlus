@@ -12,6 +12,7 @@ type Timer = {
   duration: number;
   remaining: number;
   isFinished: boolean;
+  PlantName: string;
 };
 
 export default function AlarmSection() {
@@ -19,6 +20,7 @@ export default function AlarmSection() {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
+  const [PlantName, setPlantName] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,12 +54,14 @@ export default function AlarmSection() {
       duration: totalSeconds,
       remaining: totalSeconds,
       isFinished: false,
+      PlantName: PlantName,
     };
 
     setTimers((prev) => [newTimer, ...prev]);
     setHours("");
     setMinutes("");
     setSeconds("");
+    setPlantName("");
   };
 
   const renderItem = ({ item }: { item: Timer }) => {
@@ -67,6 +71,7 @@ export default function AlarmSection() {
     const timeDisplay = `${hrs.toString().padStart(2, "0")}:${mins
       .toString()
       .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    const Plant = item.PlantName || "Planta";
 
     return (
       <View
@@ -74,11 +79,12 @@ export default function AlarmSection() {
           item.isFinished ? "bg-green-200" : "bg-blue-100"
         }`}
       >
+        <Text className="text-2xl text-center font-semibold text-gray-800">{Plant}</Text>
         <Text className="text-2xl font-semibold text-gray-800">
           {timeDisplay}
         </Text>
         {item.isFinished && (
-          <Text className="text-green-700 mt-1">¡Terminado!</Text>
+          <Text className="text-green-700 mt-1">¡Hora de regar!</Text>
         )}
       </View>
     );
@@ -87,32 +93,46 @@ export default function AlarmSection() {
   return (
     <View className="flex-1 px-5 py-6 bg-white">
       <Text className="text-xl font-bold text-center text-gray-900 mb-4">
-        Nuevo Temporizador
+        Configura tu Temporizador
       </Text>
 
       {/* Entradas de tiempo */}
-      <View className="flex-row justify-between mb-3">
-        <TextInput
-          className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base text-gray-800"
-          placeholder="HH"
-          keyboardType="numeric"
-          value={hours}
-          onChangeText={setHours}
-        />
-        <TextInput
-          className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base text-gray-800"
-          placeholder="MM"
-          keyboardType="numeric"
-          value={minutes}
-          onChangeText={setMinutes}
-        />
-        <TextInput
-          className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base text-gray-800"
-          placeholder="SS"
-          keyboardType="numeric"
-          value={seconds}
-          onChangeText={setSeconds}
-        />
+      <View className="flex-col justify-center mb-3">
+        <View className="flex-row items-center justify-center mb-4 gap-3 ">
+          <TextInput
+            className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base "
+            placeholder="Horas"
+            placeholderTextColor={"#000"}
+            keyboardType="numeric"
+            value={hours}
+            onChangeText={setHours}
+          />
+          <TextInput
+            className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base text-gray-800"
+            placeholder="Minutos"
+            keyboardType="numeric"
+            placeholderTextColor={"#000"}
+            value={minutes}
+            onChangeText={setMinutes}
+          />
+          <TextInput
+            className="w-[30%] border border-gray-300 rounded-md text-center py-2 text-base text-gray-800"
+            placeholder="Segundos"
+            keyboardType="numeric"
+            placeholderTextColor={"#000"}
+            value={seconds}
+            onChangeText={setSeconds}
+          />
+        </View>
+        <View className="px-1.5 flex items-center">
+          <TextInput
+            className="w-full border border-gray-300 rounded-md text-center py-2 text-base  text-gray-800"
+            placeholder="Nombre Planta"
+            placeholderTextColor={"#000"}
+            value={PlantName}
+            onChangeText={setPlantName}
+          />
+        </View>
       </View>
 
       {/* Botón */}
